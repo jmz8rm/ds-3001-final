@@ -1,1 +1,42 @@
+---
+title: "Final project"
+author: 
+- "Justin Zhang"
+- "Cato Zhong"
+- "Aaron Lin"
+date: "May 1, 2023"
+output: html_notebook
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(caret)
+library(rpart)
+library(rpart.plot)
+library(ROCR)
+
+```
+# Question:
+## Background
+## Exploratory analysis
+## Methods
+```{r}
+# preprocessing
+```
+
+```{r}
+# training
+```
+
+```{r}
+# evaluate/tune
+```
+
+```{r}
+# tune
+```
+## Evaluation
+## Fairness assessment
+## Conclusion
+## Future work
