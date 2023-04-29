@@ -14,6 +14,7 @@ library(tidyverse)
 library(caret)
 library(rpart)
 library(rpart.plot)
+library(randomForest)
 library(ROCR)
 
 ```
@@ -33,13 +34,44 @@ https://link.springer.com/article/10.1007/s13748-013-0040-3
 
 
 ## Exploratory analysis
+```{r}
+
+# preprocessing
+bike <- read.csv("bike-hour.csv")
+rownames(bike) <- bike$instant
+bike <- bike %>% 
+  select(-c(instant, dteday, casual, registered)) %>% 
+  mutate_at(c("season", "yr", "mnth", "hr", "holiday", "weekday", "workingday", "weathersit"), as.factor)
+
+str(bike)
+view(bike)
+
+```
 ## Methods
 ```{r}
-# preprocessing
+
+# split data
+set.seed(2023)
+train_tunetest_index <- createDataPartition(bike$cnt, p=0.7, list=FALSE)
+train <- bike[train_tunetest_index,]
+tunetest <- bike[-train_tunetest_index,]
+tune_test_index <- createDataPartition(tunetest$cnt, p=0.5, list=FALSE)
+tune <- tunetest[tune_test_index,]
+test <- tunetest[-tune_test_index,]
+
+hist(train$cnt)
+hist(tune$cnt)
+hist(test$cnt)
+
 ```
 
 ```{r}
+
 # training
+train_x <- train %>% select(-cnt)
+train_y <- train$cnt
+rf <- randomForest(train_x, train_y)
+
 ```
 
 ```{r}
