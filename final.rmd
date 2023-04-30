@@ -5,7 +5,14 @@ author:
 - "Cato Zhong"
 - "Aaron Lin"
 date: "May 1, 2023"
-output: html_notebook
+output:
+  html_document:
+    toc: TRUE
+    theme: cosmo
+    toc_float: TRUE
+    code_folding: hide
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +23,14 @@ library(rpart)
 library(rpart.plot)
 library(randomForest)
 library(ROCR)
+<<<<<<< HEAD
+=======
+library(ggplot2)
+library(MLmetrics)
+library(mltools)
+>>>>>>> 023ab3b244bef71c2c4814e58acfcb8e42ee0d5f
 ```
+<!-- Phase 1: Idea Development --> 
 # Question:
 ## Background
 For our project, we chose a dataset of the number of bike share rentals per hour based on factors such as weather, season, time of day, day of week, and hour of day. The source of the dataset is from Fanaee-T and Gama ((2014)), who compiled publicly available ride data from Capital Bikeshare in Washington, D.C. for 2011-2012 with publicly available weather and holiday data. 
@@ -33,20 +47,48 @@ Other research published using this data set:
 https://link.springer.com/article/10.1007/s13748-013-0040-3
 
 
-
+<!-- Phase 2: Data Prep & Problem Exploration --> 
 ## Exploratory analysis
 ```{r}
 
 # preprocessing
 bike <- read.csv("bike-hour.csv")
 rownames(bike) <- bike$instant
-bike <- bike %>% 
-  select(-c(instant, dteday, casual, registered)) %>% 
-  mutate_at(c("season", "yr", "mnth", "hr", "holiday", "weekday", "workingday", "weathersit"), as.factor)
+
 
 str(bike)
+<<<<<<< HEAD
+=======
+bike <- bike %>% 
+  select(-c(instant, dteday, casual, registered, yr)) %>% 
+  mutate_at(c("season", "yr", "mnth", "hr", "holiday", "weekday", "workingday", "weathersit"), as.factor)
+str(bike)
 
+view(bike)
+>>>>>>> 023ab3b244bef71c2c4814e58acfcb8e42ee0d5f
+
+
+fivenum(bike$cnt)
+boxplot(bike$cnt)
+hist(bike$cnt, col = 'red')
+
+
+bike_tbl <- bike %>% group_by(hr) %>% 
+  summarise(sum=sum(cnt),
+            .groups = 'drop')
+
+ggplot(bike_tbl, aes(x = hr, y = sum)) +
+    geom_bar(stat = 'identity')
 ```
+1 Bike is by far the most common amount of bikes rented out at one time. The data set does not include data where there were no bikes checked out, which is why the morning hours have a few less data points than waking hours. The rest of the hours have uniformly even counts, with 6AM - 11PM all having between 725 and 730 data points. 
+
+We think the biggest factor affecting the number of bicycles rented will be the time of day, or what hour it is. Grouping our data by hour and then displaying it in a bar chart with count shows us a distribution that we expect, with the most active hours being the rush hours, with a steady count throughout the day dropping off as it gets later and later into the night and the following morning.
+
+
+=======
+
+<!-- Phase 3: Solution Development --> 
+>>>>>>> 3f096e5ce830b23befea1b61ec1d5a4587ebf36a
 ## Methods
 ```{r}
 
@@ -106,7 +148,12 @@ ggplot(importances, aes(x=names, y=`%IncMSE`)) +
 ```
 ## Evaluation
 ## Fairness assessment
+<<<<<<< HEAD
 A fairness assessment is not necessary, since there are no protected classes in our dataset.
+=======
+
+<!-- Phase 4: Solution Deployment --> 
+>>>>>>> 023ab3b244bef71c2c4814e58acfcb8e42ee0d5f
 ## Conclusion
 Our model was fairly competent in capturing the model, with 93% of the variance being captured by the model. The most important factors are [TODO]. Our R^2 value was [TODO], which is [TODO].
 
