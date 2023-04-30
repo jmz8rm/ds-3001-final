@@ -16,10 +16,11 @@ library(rpart)
 library(rpart.plot)
 library(randomForest)
 library(ROCR)
-
 ```
 # Question:
 ## Background
+For our project, we chose a dataset of the number of bike share rentals per hour based on factors such as weather, season, time of day, day of week, and hour of day. The source of the dataset is from Fanaee-T and Gama ((2014)), who compiled publicly available ride data from Capital Bikeshare in Washington, D.C. for 2011-2012 with publicly available weather and holiday data. 
+
 Bike shares are a new type of bike rental that has been fully automated, from membership to rental and return. These systems allow users to easily rent bikes from one location and return them to other locations around the city.
 
 We chose to focus on the Capital Bikeshare located in Washington, DC and look at the hourly data associated with the bikeshare.
@@ -44,7 +45,6 @@ bike <- bike %>%
   mutate_at(c("season", "yr", "mnth", "hr", "holiday", "weekday", "workingday", "weathersit"), as.factor)
 
 str(bike)
-view(bike)
 
 ```
 ## Methods
@@ -70,12 +70,35 @@ hist(test$cnt)
 # training
 train_x <- train %>% select(-cnt)
 train_y <- train$cnt
-rf <- randomForest(train_x, train_y)
+tune_x <- tune %>% select(-cnt)
+tune_y <- tune$cnt
 
+# rf_with_test <- randomForest(train_x, train_y, tune_x, tune_y, importance=TRUE)
+
+# rf <- randomForest(train_x, train_y)
+
+# as.data.frame(rf_with_test$importance)
+
+# importance(rf_with_test)
+
+tune_output <- tuneRF(train_x, train_y, doBest=TRUE, xtest=tune_x, ytest=tune_y, importance=TRUE)
+tune_output
+importance(tune_output)
 ```
 
 ```{r}
 # evaluate/tune
+
+importances <- as.data.frame(importance(tune_output))
+importances$names <- rownames(importances)
+importances
+
+ggplot(importances, aes(x=names, y=`%IncMSE`)) +
+  geom_segment(aes(x=names, xend=names, y=0, yend=`%IncMSE`)) +
+  geom_point(aes(size=IncNodePurity)) +
+  theme_light() + 
+  coord_flip()
+
 ```
 
 ```{r}
@@ -83,5 +106,25 @@ rf <- randomForest(train_x, train_y)
 ```
 ## Evaluation
 ## Fairness assessment
+A fairness assessment is not necessary, since there are no protected classes in our dataset.
 ## Conclusion
+Our model was fairly competent in capturing the model, with 93% of the variance being captured by the model. The most important factors are [TODO]. Our R^2 value was [TODO], which is [TODO].
+
+This model still has limitations. A random forest model can't extrapolate, because the range of possible values the model outputs are the range of values in the dataset. Especially for the topic of bike sharing, extrapolating is important because the maximum of values are constantly increasing. To be fair, extrapolating growth into the future would be hard for any machine learning model. What our model is useful for is identifying the features that matter the most to affecting bike rental count and identifying how much bike rental count is affected (or can be predicted by) the factors in our dataset. 
+
+A problem with our dataset was that the hours where there were no bike rentals (cnt==0) were not included in the dataset, so our model couldn't capture hours like those. 
+
 ## Future work
+In the future, we could include more features into our dataset, include 0 counts into our dataset, include a larger timespan by building and cleaning the data straight from Capital Bike, and/or use a different type of model. Using machine learning in this way to predict bike rental counts is very promising, given the high R^2 value and the high variance explained by our model. Given this, future work should have very good results. 
+
+## References 
+[1] https://link.springer.com/article/10.1007/s13748-013-0040-3
+
+[2] https://nacto.org/shared-micromobility-2020-2021/
+
+[3] https://nacto.org/wp-content/uploads/2022/12/2020-2021_shared_micro_snapshot_Dec7_2022.pdf
+
+[4] https://ride.capitalbikeshare.com/about#:~:text=The%20History%20of%20Capital%20Bikeshare,its%20two%20years%20of%20operation
+
+
+
