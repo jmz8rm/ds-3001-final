@@ -16,6 +16,7 @@ library(rpart)
 library(rpart.plot)
 library(randomForest)
 library(ROCR)
+library(ggplot2)
 
 ```
 # Question:
@@ -43,10 +44,25 @@ bike <- bike %>%
   select(-c(instant, dteday, casual, registered)) %>% 
   mutate_at(c("season", "yr", "mnth", "hr", "holiday", "weekday", "workingday", "weathersit"), as.factor)
 
+fivenum(bike$cnt)
+boxplot(bike$cnt)
+hist(bike$cnt, col = 'red')
+
+
+bike_tbl <- bike %>% group_by(hr) %>% 
+  summarise(sum=sum(cnt),
+            .groups = 'drop')
+
+ggplot(bike_tbl, aes(x = hr, y = sum)) +
+    geom_bar(stat = 'identity')
+
 str(bike)
 view(bike)
 
 ```
+1 Bike is by far the most common amount of bikes rented out at one time. The data set does not include data where there were no bikes checked out, which is why the morning hours have a few less data points than waking hours. The rest of the hours have uniformly even counts, with 6AM - 11PM all having between 725 and 730 data points. 
+
+
 ## Methods
 ```{r}
 
