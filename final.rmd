@@ -5,7 +5,14 @@ author:
 - "Cato Zhong"
 - "Aaron Lin"
 date: "May 1, 2023"
-output: html_notebook
+output:
+  html_document:
+    toc: TRUE
+    theme: cosmo
+    toc_float: TRUE
+    code_folding: hide
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -17,8 +24,10 @@ library(rpart.plot)
 library(randomForest)
 library(ROCR)
 library(ggplot2)
-
+library(MLmetrics)
+library(mltools)
 ```
+<!-- Phase 1: Idea Development --> 
 # Question:
 ## Background
 Bike shares are a new type of bike rental that has been fully automated, from membership to rental and return. These systems allow users to easily rent bikes from one location and return them to other locations around the city.
@@ -33,16 +42,23 @@ Other research published using this data set:
 https://link.springer.com/article/10.1007/s13748-013-0040-3
 
 
-
+<!-- Phase 2: Data Prep & Problem Exploration --> 
 ## Exploratory analysis
 ```{r}
 
 # preprocessing
 bike <- read.csv("bike-hour.csv")
 rownames(bike) <- bike$instant
+
+
+str(bike)
 bike <- bike %>% 
-  select(-c(instant, dteday, casual, registered)) %>% 
+  select(-c(instant, dteday, casual, registered, yr)) %>% 
   mutate_at(c("season", "yr", "mnth", "hr", "holiday", "weekday", "workingday", "weathersit"), as.factor)
+str(bike)
+
+view(bike)
+
 
 fivenum(bike$cnt)
 boxplot(bike$cnt)
@@ -55,14 +71,14 @@ bike_tbl <- bike %>% group_by(hr) %>%
 
 ggplot(bike_tbl, aes(x = hr, y = sum)) +
     geom_bar(stat = 'identity')
-
-str(bike)
-view(bike)
-
 ```
 1 Bike is by far the most common amount of bikes rented out at one time. The data set does not include data where there were no bikes checked out, which is why the morning hours have a few less data points than waking hours. The rest of the hours have uniformly even counts, with 6AM - 11PM all having between 725 and 730 data points. 
 
 
+=======
+
+<!-- Phase 3: Solution Development --> 
+>>>>>>> 3f096e5ce830b23befea1b61ec1d5a4587ebf36a
 ## Methods
 ```{r}
 
@@ -99,5 +115,7 @@ rf <- randomForest(train_x, train_y)
 ```
 ## Evaluation
 ## Fairness assessment
+
+<!-- Phase 4: Solution Deployment --> 
 ## Conclusion
 ## Future work
