@@ -23,12 +23,9 @@ library(rpart)
 library(rpart.plot)
 library(randomForest)
 library(ROCR)
-<<<<<<< HEAD
-=======
 library(ggplot2)
 library(MLmetrics)
 library(mltools)
->>>>>>> 023ab3b244bef71c2c4814e58acfcb8e42ee0d5f
 ```
 <!-- Phase 1: Idea Development --> 
 # Question:
@@ -57,15 +54,13 @@ rownames(bike) <- bike$instant
 
 
 str(bike)
-<<<<<<< HEAD
-=======
+
 bike <- bike %>% 
   select(-c(instant, dteday, casual, registered, yr)) %>% 
   mutate_at(c("season", "yr", "mnth", "hr", "holiday", "weekday", "workingday", "weathersit"), as.factor)
 str(bike)
 
 view(bike)
->>>>>>> 023ab3b244bef71c2c4814e58acfcb8e42ee0d5f
 
 
 fivenum(bike$cnt)
@@ -84,11 +79,7 @@ ggplot(bike_tbl, aes(x = hr, y = sum)) +
 
 We think the biggest factor affecting the number of bicycles rented will be the time of day, or what hour it is. Grouping our data by hour and then displaying it in a bar chart with count shows us a distribution that we expect, with the most active hours being the rush hours, with a steady count throughout the day dropping off as it gets later and later into the night and the following morning.
 
-
-=======
-
 <!-- Phase 3: Solution Development --> 
->>>>>>> 3f096e5ce830b23befea1b61ec1d5a4587ebf36a
 ## Methods
 ```{r}
 
@@ -148,12 +139,9 @@ ggplot(importances, aes(x=names, y=`%IncMSE`)) +
 ```
 ## Evaluation
 ## Fairness assessment
-<<<<<<< HEAD
 A fairness assessment is not necessary, since there are no protected classes in our dataset.
-=======
 
 <!-- Phase 4: Solution Deployment --> 
->>>>>>> 023ab3b244bef71c2c4814e58acfcb8e42ee0d5f
 ## Conclusion
 Our model was fairly competent in capturing the model, with 93% of the variance being captured by the model. The most important factors are [TODO]. Our R^2 value was [TODO], which is [TODO].
 
