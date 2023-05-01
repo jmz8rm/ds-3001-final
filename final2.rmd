@@ -317,7 +317,7 @@ result_r_squared <- 1 - ss_res / ss_tot
 
 ```{r}
 predval <- data.frame("Metric" = "MSE", "Value"= result_mse)
-predval[nrow(predval)+1,] <- c("RMSE",result_r_squared)
+predval[nrow(predval)+1,] <- c("R-Squared",result_r_squared)
 paged_table(predval)
 ```
 
