@@ -47,7 +47,6 @@ https://link.springer.com/article/10.1007/s13748-013-0040-3
 <!-- Phase 2: Data Prep & Problem Exploration --> 
 ## Exploratory analysis
 ```{r}
-
 # preprocessing
 bike <- read.csv("bike-hour.csv")
 rownames(bike) <- bike$instant
@@ -57,7 +56,7 @@ str(bike)
 
 bike <- bike %>% 
   select(-c(instant, dteday, casual, registered, yr)) %>% 
-  mutate_at(c("season", "yr", "mnth", "hr", "holiday", "weekday", "workingday", "weathersit"), as.factor)
+  mutate_at(c("season", "mnth", "hr", "holiday", "weekday", "workingday", "weathersit"), as.factor)
 str(bike)
 
 view(bike)
@@ -77,7 +76,7 @@ ggplot(bike_tbl, aes(x = hr, y = sum)) +
 ```
 1 Bike is by far the most common amount of bikes rented out at one time. The data set does not include data where there were no bikes checked out, which is why the morning hours have a few less data points than waking hours. The rest of the hours have uniformly even counts, with 6AM - 11PM all having between 725 and 730 data points. 
 
-We think the biggest factor affecting the number of bicycles rented will be the time of day, or what hour it is. Grouping our data by hour and then displaying it in a bar chart with count shows us a distribution that we expect, with the most active hours being the rush hours, with a steady count throughout the day dropping off as it gets later and later into the night and the following morning.
+We think the most influential factor affecting the number of bicycles rented will be the time of day, or what hour it is. Grouping our data by hour and then displaying it in a bar chart with count shows us a distribution that we expect, with the most active hours being the rush hours, with a steady count throughout the day dropping off as it gets later and later into the night and the following morning.
 
 <!-- Phase 3: Solution Development --> 
 ## Methods
@@ -92,9 +91,9 @@ tune_test_index <- createDataPartition(tunetest$cnt, p=0.5, list=FALSE)
 tune <- tunetest[tune_test_index,]
 test <- tunetest[-tune_test_index,]
 
-hist(train$cnt)
-hist(tune$cnt)
-hist(test$cnt)
+#hist(train$cnt)
+#hist(tune$cnt)
+#hist(test$cnt)
 
 ```
 

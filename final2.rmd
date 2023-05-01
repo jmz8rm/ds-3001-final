@@ -36,11 +36,9 @@ library(rmarkdown)
 ### <b><u>ML Question/Problem:</u> Develop a model that can predict the number of bikes rented.</b>
 
 ## Background
+Bike shares are a novel type of bike rental that has been fully automated, from membership to rental and return. These systems allow users to easily rent bikes from one location and return them to other locations around the city and are part of a larger trend of shared micromobility around the world.
+
 For our project, we chose a dataset on the number of bike share rentals per hour based on factors such as weather, season, time of day, day of week, and hour of day. The source of the dataset is from [Fanaee-T and Gama (2014)](https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset?fbclid=IwAR32pIoKhPoXNbwORbZZNBnIvD1iqwkQprMIFTXLTJDII5XzLP0GkpBrZG0), who compiled publicly available ride data from Capital Bikeshare in Washington, D.C. for 2011-2012 with publicly available weather and holiday data. 
-
-Bike shares are a new type of bike rental that has been fully automated, from membership to rental and return. These systems allow users to easily rent bikes from one location and return them to other locations around the city.
-
-We chose to focus on the Capital Bikeshare located in Washington, DC and look at the hourly data associated with the bikeshare.
 
 We picked this data-set due in part due to the size, with 17,000+ rows available and a good mix of categorical and continuous data. The bikeshare data can also tell us about the traffic, environmental, and health issues in the city so it is an interesting data set to look at. Furthermore, a working model can used to identify optimal conditions for more bike share programs. Bike share companies can also better allocate their resources by being able to predict where they will have the most business.
 
