@@ -346,6 +346,7 @@ predval <- data.frame("Metric" = "MSE (sample size 1000)", "Value"= result_mse7)
 predval[nrow(predval)+1,] <- c("R^2 (sample size 1000)",result_r_squared7)
 predval[nrow(predval)+1,] <- c("MSE (sample size max)",result_mse6)
 predval[nrow(predval)+1,] <- c("R^2 (sample size max)",result_r_squared6)
+
 paged_table(predval)
 ```
 
