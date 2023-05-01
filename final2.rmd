@@ -119,6 +119,7 @@ mytry_tune <- function(x){
 
 mytry_tune(bike) # 3.316625 -> start with 4
 
+set.seed(2023)
 rf1 = randomForest(cnt~.,
                    train,
                    ntree = 1000,
@@ -174,6 +175,7 @@ Not much difference after about first 400 trees. The MSE are still pretty high, 
 ### (1) Alter mtry
 ```{r, include=FALSE}
 # Change mtry
+set.seed(2023)
 rf2 = randomForest(cnt~.,
                    train,
                    ntree = 500,
@@ -184,6 +186,7 @@ rf2 = randomForest(cnt~.,
                    do.trace = TRUE,
                    keep.forest = TRUE,
                    keep.inbag = TRUE)
+set.seed(2023)
 rf3 = randomForest(cnt~.,
                    train,
                    ntree = 500,
@@ -213,7 +216,8 @@ paged_table(mtry_config)
 
 ### (2) Alter Sample Size
 ```{r, include=FALSE}
-# Change mtry
+# Change sampsize
+set.seed(2023)
 rf4 = randomForest(cnt~.,
                    train,
                    ntree = 500,
@@ -224,6 +228,7 @@ rf4 = randomForest(cnt~.,
                    do.trace = TRUE,
                    keep.forest = TRUE,
                    keep.inbag = TRUE)
+set.seed(2023)
 rf5 = randomForest(cnt~.,
                    train,
                    ntree = 500,
@@ -259,7 +264,8 @@ The two evaluation metrics also improve with increasing sample size. Since, we h
 
 ## Final Model
 ```{r, include=FALSE}
-# Change mtry
+# Optimize Hyperparameters
+set.seed(2023)
 rf6 = randomForest(cnt~.,
                    train,
                    ntree = 500,
@@ -322,7 +328,7 @@ paged_table(predval)
 A fairness assessment is not necessary, since there are no protected classes in our dataset.
 
 ## Conclusion
-Our final model was fairly competent, with 81% of the variance being captured by the model. The most important factor is 'hr', which was way more important than any other variable. Our R<sup>2</sup> value was 0.8096522 and 0.8179705 when predicting on the test set, which does a decent job at predicting the bike count, with some error.
+Our final model was fairly competent, with ~81% of the variance being captured by the model. The most important factor is 'hr', which was way more important than any other variable. Our R<sup>2</sup> value was 0.81 and 0.82 when predicting on the test set, which does a decent job at predicting the bike count, with some error.
 
 This model still has limitations. A random forest model can't extrapolate, because the range of possible values the model outputs are the range of values in the dataset. Especially for the topic of bike sharing, extrapolating is important because the maximum of values are constantly increasing. To be fair, extrapolating growth into the future would be hard for any machine learning model. What our model is useful for is identifying the features that matter the most to affecting bike rental count and identifying how much bike rental count is affected (or can be predicted by) the factors in our dataset. This can still be helpful in identifying allocation of resources to our different locations.
 
